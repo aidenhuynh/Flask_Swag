@@ -19,3 +19,7 @@ def aidensblog():
 @app_projects.route('/ahadsblog/')
 def ahadsblog():
     return render_template("ahadsblog.html")
+
+@app_projects.route('/whosthatpokemon/')
+def whosthatpokemon():
+    return render_template("whosthatpokemon.html")
