@@ -9,7 +9,7 @@ app_api2 = Blueprint('api', __name__,
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
 api = Api(app_api2)
-data = [{"Wins": 0, "Losses": 0}]
+data = [{"Blackjack": {"Wins": 0, "Losses": 0}}]
 
 class TestAPI:
     class _GetAll(Resource):
@@ -17,12 +17,12 @@ class TestAPI:
             return jsonify(data)
     class _PutWin(Resource):
         def put(self):
-            data[0]["Wins"] = data[0]["Wins"] + 1;
-            return jsonify(data[0])
+            data["Blackjack"]["Wins"] = data["Blackjack"]["Wins"] + 1;
+            return jsonify(data["Blackjack"])
     class _PutLoss(Resource):
         def put(self):
-            data[0]["Losses"] = data[0]["Losses"] + 1;
-            return jsonify(data[0])
+            data["Blackjack"]["Losses"] = data["Blackjack"]["Losses"] + 1;
+            return jsonify(data["Blackjack"])
 
 
     api.add_resource(_GetAll, '/')
