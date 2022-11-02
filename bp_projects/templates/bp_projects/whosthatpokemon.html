@@ -36,8 +36,9 @@
     <head>
         <style>
         body.background {
-            background-image: url('https://assets.pokemon.com//assets/cms2/img/misc/virtual-backgrounds/masters/forest.jpg');
-            background-size: cover
+            background-image: url('../../static/assets/whosthatpokemon/forest.jpeg');
+            background-size: cover;
+            background-position: center
         }
         .myDiv {
             border: 0px solid rgb(0, 0, 0);
@@ -67,7 +68,7 @@
             outline: 10px solid red;
         }
         tr.pokeBox {
-            background-image:url('https://i.ibb.co/rQFzcnD/d83htw0-ec490c3b-f7dd-4570-a698-8404a8a12f99.png');
+            background-image:url('../../static/assets/whosthatpokemon/pokemonscene.png');
             background-size: cover;
             color:white;
         }
@@ -104,7 +105,7 @@
                     <br>
                     <br>
                     <br>
-                    <span id="imageBox"><img class="myIMG" src="https://www.freepnglogos.com/uploads/pokeball-png/pokeball-alexa-style-blog-pokemon-inspired-charmander-daily-8.png"></span>
+                    <span id="imageBox"><img class="myIMG" src="../../static/assets/whosthatpokemon/pokeball.png"></span>
                     <br>
                     <br>
                     <br>
@@ -335,7 +336,7 @@
     }
 
     function apiUpdate(gameResult) {
-        if (gameResult == "win") {
+        if (gameResult === 1) {
         apiAddGameWon()
         }
 
@@ -447,10 +448,7 @@
         var pokeGuess = document.getElementById("inputBox").value
         var input = pokeGuess.toLowerCase()
 
-        if (pokeGuess == "") {
-            document.getElementById('message').innerHTML = "Please guess something in the box above and press submit or enter"
-        }
-        else {
+        if (pokeGuess !== "") {
             while (pokeChecked == false) {
                 if (input == pokeFilteredName) {
                     if (correct < (pokeMax - pokeMin)) {
@@ -465,7 +463,7 @@
                     document.getElementById('rowButtons').innerHTML = ' \
                     <td colspan=8><button type="button" class="myButton" onclick="location.reload()">Restart</button></td> \
                     '
-                    apiUpdate(win)
+                    apiUpdate(1)
                     }
                 }
                 else {
@@ -477,10 +475,8 @@
                     else {
                         incorrect += 1
                         document.getElementById('message').innerHTML = pokeGuess + " is incorrect! You lose!"
-                        document.getElementById('rowButtons').innerHTML = ' \
-                        <td colspan=8><button type="button" class="myButton" onclick="location.reload()">Restart</button></td> \
-                        '
-                        apiUpdate(loss)
+                        document.getElementById('rowButtons').innerHTML = '<td colspan=8><button type="button" class="myButton" onclick="location.reload()">Restart</button></td>'
+                        apiUpdate(0)
                     }             
                 }
                 document.getElementById('displayedCorrect').innerHTML = correct + "/" + (pokeMax - pokeMin + 1)
@@ -489,6 +485,9 @@
 
                 pokeChecked = true
             }
+        }
+        else {
+            document.getElementById('message').innerHTML = "Please guess something in the box above and press submit or enter"
         }
     }
 
