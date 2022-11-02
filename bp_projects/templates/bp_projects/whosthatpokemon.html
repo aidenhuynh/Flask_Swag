@@ -35,6 +35,10 @@
     </body>
     <head>
         <style>
+        body.background {
+            background-image: url('https://assets.pokemon.com//assets/cms2/img/misc/virtual-backgrounds/masters/forest.jpg');
+            background-size: cover
+        }
         .myDiv {
             border: 0px solid rgb(0, 0, 0);
             padding: 30px;
@@ -42,7 +46,7 @@
             width: 60%;
             margin: auto;
             border-radius: 25px;
-            height:100%;
+            height:auto;
             font-family:'Courier New', Courier, monospace
         }
         button.myButton {
@@ -79,6 +83,7 @@
         </style>
     </head>
     <br>
+    <body class="background">
     <div class="myDiv">
         <h1 style="color:rgb(0, 149, 255); text-align:center">Who's That Pokémon?</h1>
         <br>
@@ -118,8 +123,21 @@
                 </tr>
             </span>
         </table>
+        <br>
+        <br>
+        <span style="color:rgb(255, 255, 0)">
+            <h3 style="color:rgb(0, 149, 255)">Global Game Data:</h3>
+            <ul>
+                <li id="apiCorrect">Total Correct Answers:</li>
+                <li id="apiIncorrect">Total Incorrect Answers:</li>
+                <li id="apiGamesPlayed">Total Games Played:</li>
+                <li id="apiGamesWon">Total Games Won:</li>
+                <li id="apiWinrate">Average Win Rate: </li>
+            </ul>
+        </span>
     </div>
     <br>
+    </body>
 <script>
     // Pokemon variables
     var pokeMin = ""
@@ -135,6 +153,10 @@
     var incorrect = 0
     const strikes = 3 // how many user is allowed to get incorrect before losing
     var pokeChecked = ""
+
+    const url = "https://swag.nighthawkcodingteams.cf/api/tester" // WEB
+    // const url = "http://127.0.0.1:5000/api/tester" // LOCAL
+
 
     const options = {
       method: 'GET',
@@ -252,6 +274,78 @@
         "farfetch'd"
     ]
 
+    function apiShowData() {
+        fetch(url+'/correct', {
+            method: 'GET',
+        }).then(response => {response.json().then(data => {
+            var apiCorrect = data.wtp.totalCorrect
+            document.getElementById('apiCorrect').innerHTML = data.wtp.totalCorrect
+        })})
+
+        fetch(url+'/incorrect', {
+            method: 'GET',
+        }).then(response => {response.json().then(data => {
+            var apiCorrect = data.wtp.totalCorrect
+            document.getElementById('apiIncorrect').innerHTML = data.wtp.totalIncorrect
+        })})
+
+        fetch(url+'/gamePlayed', {
+            method: 'GET',
+        }).then(response => {response.json().then(data => {
+            var apiCorrect = data.wtp.totalCorrect
+            document.getElementById('apiGamesPlayed').innerHTML = data.wtp.gamesPlayed
+        })})
+
+        fetch(url+'/gameWon', {
+            method: 'GET',
+        }).then(response => {response.json().then(data => {
+            var apiCorrect = data.wtp.totalCorrect
+            document.getElementById('apiGamesWon').innerHTML = data.wtp.gamesWon
+        })})
+    }
+
+    function apiAddCorrect(i) {
+        while (i > 0){
+                fetch(url+"/correct", {
+                method: 'PUT',
+            }).then(response => {response.json().then(data => {document.getElementById("apiCorrect").innerHTML = data.wtp.totalCorrect})})
+        i -= 1
+        }
+    }
+
+    function apiAddIncorrect(i) {
+        while (i > 0){
+            fetch(url+"/incorrect", {
+            method: 'PUT',
+        }).then(response => {response.json().then(data => {document.getElementById("apiIncorrect").innerHTML = data.wtp.totalIncorrect})})
+    i -= 1
+    }
+}
+
+    function apiAddGamePlayed() {
+        fetch(url+"/gamePlayed", {
+            method: 'PUT',
+          }).then(response => {response.json().then(data => {document.getElementById("apiGamesPlayed").innerHTML = data.wtp.gamesPlayed})})
+    }
+
+    function apiAddGameWon() {
+        fetch(url+"/gameWon", {
+            method: 'PUT',
+          }).then(response => {response.json().then(data => {document.getElementById("apiGamesWon").innerHTML = data.wtp.gamesWon})})
+    }
+
+    function apiUpdate(gameResult) {
+        if (gameResult == "win") {
+        apiAddGameWon()
+        }
+
+        apiAddCorrect(correct)
+        apiAddIncorrect(incorrect)
+        apiAddGamePlayed()
+
+        document.getElementById('apiWinrate').innerHTML = 100*(document.getElementById('apiGamesWon') / document.getElementById('apiGamesPlayed')) + "%"
+    }
+
     function gameStart() {
         document.getElementById('rowButtons').innerHTML = ""
         document.getElementById('message').innerHTML = "Choose a generation"
@@ -364,13 +458,15 @@
                     document.getElementById('message').innerHTML = pokeGuess + " is correct!"
                     usedIds.push(randId)
                     document.getElementById('continueButton').innerHTML = "Next"
-                }
+                    }
                     else {
                     correct += 1
                     document.getElementById('message').innerHTML = pokeGuess + " is correct! You win!"
                     document.getElementById('rowButtons').innerHTML = ' \
                     <td colspan=8><button type="button" class="myButton" onclick="location.reload()">Restart</button></td> \
-                    '                }
+                    '
+                    apiUpdate(win)
+                    }
                 }
                 else {
                     if (incorrect < (strikes - 1)) {
@@ -384,6 +480,7 @@
                         document.getElementById('rowButtons').innerHTML = ' \
                         <td colspan=8><button type="button" class="myButton" onclick="location.reload()">Restart</button></td> \
                         '
+                        apiUpdate(loss)
                     }             
                 }
                 document.getElementById('displayedCorrect').innerHTML = correct + "/" + (pokeMax - pokeMin + 1)
@@ -408,20 +505,4 @@
         )
     }
 </script>
-{% block background %}
-    <script src="{{ url_for('static', filename='js/three.r119.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/vanta.net.min.js') }}"></script>
-    <script>
-        VANTA.NET({
-            el: "body",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00
-        })
-    </script>
-{% endblock %}
 </html>

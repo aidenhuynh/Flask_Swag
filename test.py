@@ -9,12 +9,17 @@ app_api2 = Blueprint('api', __name__,
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
 api = Api(app_api2)
-data = [{"Blackjack": {"Wins": 0, "Losses": 0}}]
+data = [{
+        "Blackjack": {"Wins": 0, "Losses": 0},
+        "wtp": {"totalCorrect": 0, "totalIncorrect": 0, "gamesPlayed": 0, "gamesWon": 0}
+    }]
 
 class TestAPI:
     class _GetAll(Resource):
         def get(self):
             return jsonify(data)
+    
+    # Blackjack
     class _PutWin(Resource):
         def put(self):
             data["Blackjack"]["Wins"] = data["Blackjack"]["Wins"] + 1;
@@ -24,12 +29,36 @@ class TestAPI:
             data["Blackjack"]["Losses"] = data["Blackjack"]["Losses"] + 1;
             return jsonify(data["Blackjack"])
 
+    # Who's that Pokémon (wtp)
+    class _PutCorrect(Resource):
+        def put(self):
+            data["wtp"]["totalCorrect"] += 1
+            return jsonify(data["wtp"])
+    class _PutIncorrect(Resource):
+        def put(self):
+            data["wtp"]["totalIncorrect"] += 1
+            return jsonify(data["wtp"])
+    class _PutGamePlays(Resource):
+        def put(self):
+            data["wtp"]["gamesPlayed"] += 1
+            return jsonify(data["wtp"])
+    class _PutGameWins(Resource):
+        def put(self):
+            data["wtp"]["gamesWon"] += 1
+            return jsonify(data["wtp"])
 
     api.add_resource(_GetAll, '/')
+    
     api.add_resource(_PutWin, '/win')
     api.add_resource(_PutLoss, '/loss')
+    
+    api.add_resource(_PutCorrect, '/correct')
+    api.add_resource(_PutIncorrect, '/incorrect')
+    api.add_resource(_PutGamePlays, '/gamePlayed')
+    api.add_resource(_PutGameWins, '/gameWon')
+
 
 if __name__ == "__main__": 
-    # server = "http://127.0.0.1:5000" #local
-    server = 'https://swag.nighthawkcodingteams.cf' #web
+    server = "http://127.0.0.1:5000" #local
+    # server = 'https://swag.nighthawkcodingteams.cf' #web
     url = server + "/api/tester"
