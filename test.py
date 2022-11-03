@@ -11,7 +11,8 @@ app_api2 = Blueprint('api', __name__,
 api = Api(app_api2)
 data = {
         "Blackjack": {"Wins": 0, "Losses": 0},
-        "wtp": {"totalCorrect": 0, "totalIncorrect": 0, "gamesPlayed": 0, "gamesWon": 0}
+        "wtp": {"totalCorrect": 0, "totalIncorrect": 0, "gamesPlayed": 0, "gamesWon": 0},
+        "bean": {"num": 0}
     }
 
 class TestAPI:
@@ -47,6 +48,11 @@ class TestAPI:
             data["wtp"]["gamesWon"] += 1
             return jsonify(data["wtp"])
 
+    class _PutBeans(Resource):
+        def put(self):
+            data["bean"]["num"] += 1
+            return jsonify(data["bean"])
+
     api.add_resource(_GetAll, '/')
     
     api.add_resource(_PutWin, '/win')
@@ -56,6 +62,8 @@ class TestAPI:
     api.add_resource(_PutIncorrect, '/incorrect')
     api.add_resource(_PutGamePlays, '/gamePlayed')
     api.add_resource(_PutGameWins, '/gameWon')
+
+    api.add_resource(_PutBeans, '/bean')
 
 
 if __name__ == "__main__": 
