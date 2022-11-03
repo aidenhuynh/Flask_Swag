@@ -29,9 +29,5 @@ def tetris():
     return render_template("tetris.html")
 
 @app_projects.route('/beanclicker/')
-def beanclicker():
+def tetris():
     return render_template("beanclicker.html")
-
-@app_projects.route('/blackjack/')
-def blackjack():
-    return render_template("blackjack.html")

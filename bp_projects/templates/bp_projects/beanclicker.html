@@ -1,12 +1,22 @@
 <html>
 <h1>beans: <b id="beanCount">0</b></h1>
+<h1>global beans: <b id="globalBeanCount">0</b></h1>
 <button onclick="addBeans()"> <input name="beancan" type="Image" src="../../static/assets/beancan.png"> </button>
 <script>
     var beans = 0
+    const url = "https://swag.nighthawkcodingteams.cf/api/tester"
+
+    fetch(url+"/bean", {
+        method: 'PUT',
+    }).then(response => {response.json().then(data => {document.getElementById("globalBeanCount").innerHTML = data.bean.num})})
+
     function addBeans() {
          beans += 1
-    document.getElementById('beanCount').innerHTML = beans   
+    document.getElementById('beanCount').innerHTML = beans  
+    
+    fetch(url+"/bean", {
+        method: 'PUT',
+      }).then(response => {response.json().then(data => {document.getElementById("globalBeanCount").innerHTML = data.bean.num})})
     }
-      
 </script>
 </html>
