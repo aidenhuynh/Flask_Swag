@@ -3,7 +3,7 @@ This HTML is setup as a fragment allowing it to be "included" by other HTML file
 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <img src="{{ url_for('static', filename='assets/flushed.png') }}" width="50" height="50" class="d-inline-block align-center" alt="">
-    <a class="navbar-brand" href="https://swag.nighthawkcodingteams.cf/">{{basename}}</a>
+    <a class="navbar-brand" href="https://www.youtube.com/watch?v=V3_QjoWOKS4">{{basename}}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -12,6 +12,19 @@ This HTML is setup as a fragment allowing it to be "included" by other HTML file
             <!-- url_for is a Jinja2 pre-processor that finds route from function name (def) -->
             <a class="nav-link" href={{ url_for('index') }}>Home</a>
             <a class="nav-link" href={{ url_for('stub') }}>Sign-Up</a>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:rgba(0,0,0,.55)">
+                        Games
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href={{ url_for('projects.whosthatpokemon') }}>Who's That Pokémon?</a></li>
+                        <li><a class="dropdown-item" href={{ url_for('projects.ahadsblog') }}>Ahad's Blog</a></li>
+                        <li><a class="dropdown-item" href={{ url_for('projects.dashsblog') }}>Dash's Blog</a></li>
+                        <li><a class="dropdown-item" href={{ url_for('projects.aidensblog') }}>Aiden's Blog</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
@@ -29,4 +42,5 @@ This HTML is setup as a fragment allowing it to be "included" by other HTML file
             </li>
         </ul>
     </div>
+    
 </nav>
