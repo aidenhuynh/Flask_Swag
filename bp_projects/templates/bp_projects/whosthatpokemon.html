@@ -129,11 +129,11 @@
         <span style="color:rgb(255, 255, 0)">
             <h3 style="color:rgb(0, 149, 255)">Global Game Data:</h3>
             <ul>
-                <li id="apiCorrect">Total Correct Answers:</li>
-                <li id="apiIncorrect">Total Incorrect Answers:</li>
-                <li id="apiGamesPlayed">Total Games Played:</li>
-                <li id="apiGamesWon">Total Games Won:</li>
-                <li id="apiWinrate">Average Win Rate:</li>
+                <li>Total Correct Answers: <b id="apiCorrect">0</b></li>
+                <li>Total Incorrect Answers: <b id="apiIncorrect"0></b></li>
+                <li>Total Games Played: <b id="apiGamesPlayed">0</b></li>
+                <li>Total Games Won: <b id="apiGamesWon">0</b></li>
+                <li>Average Win Rate: <b id="apiWinrate">0%</b></li>
             </ul>
         </span>
     </div>
@@ -275,35 +275,31 @@
         "farfetch'd"
     ]
 
-    function apiShowData() {
-        fetch(url, {
-            method: 'GET',
-        }).then(response => {response.json().then(data => {
-            var apiCorrect = data.wtp.totalCorrect
-            document.getElementById('apiCorrect').innerHTML = data.wtp.totalCorrect
-        })})
 
-        fetch(url, {
-            method: 'GET',
-        }).then(response => {response.json().then(data => {
-            var apiCorrect = data.wtp.totalCorrect
-            document.getElementById('apiIncorrect').innerHTML = data.wtp.totalIncorrect
-        })})
+    fetch(url, {
+        method: 'GET',
+    }).then(response => {response.json().then(data => {
+        document.getElementById('apiCorrect').innerHTML = data.wtp.totalCorrect
+    })})
 
-        fetch(url, {
-            method: 'GET',
-        }).then(response => {response.json().then(data => {
-            var apiCorrect = data.wtp.totalCorrect
-            document.getElementById('apiGamesPlayed').innerHTML = data.wtp.gamesPlayed
-        })})
+    fetch(url, {
+        method: 'GET',
+    }).then(response => {response.json().then(data => {
+        document.getElementById('apiIncorrect').innerHTML = data.wtp.totalIncorrect
+    })})
 
-        fetch(url, {
-            method: 'GET',
-        }).then(response => {response.json().then(data => {
-            var apiCorrect = data.wtp.totalCorrect
-            document.getElementById('apiGamesWon').innerHTML = data.wtp.gamesWon
-        })})
-    }
+    fetch(url, {
+        method: 'GET',
+    }).then(response => {response.json().then(data => {
+        document.getElementById('apiGamesPlayed').innerHTML = data.wtp.gamesPlayed
+    })})
+
+    fetch(url, {
+        method: 'GET',
+    }).then(response => {response.json().then(data => {
+        document.getElementById('apiGamesWon').innerHTML = data.wtp.gamesWon
+    })})
+
 
     function apiAddCorrect(i) {
         while (i > 0){
@@ -324,13 +320,13 @@
 }
 
     function apiAddGamePlayed() {
-        fetch(url+"/gamePlayed", {
+        fetch(url+"/gamesPlayed", {
             method: 'PUT',
           }).then(response => {response.json().then(data => {document.getElementById("apiGamesPlayed").innerHTML = data.gamesPlayed})})
     }
 
     function apiAddGameWon() {
-        fetch(url+"/gameWon", {
+        fetch(url+"gamesWon", {
             method: 'PUT',
           }).then(response => {response.json().then(data => {document.getElementById("apiGamesWon").innerHTML = data.gamesWon})})
     }
@@ -344,11 +340,16 @@
         apiAddIncorrect(incorrect)
         apiAddGamePlayed()
 
-        document.getElementById('apiWinrate').innerHTML = 100*(document.getElementById('apiGamesWon') / document.getElementById('apiGamesPlayed')) + "%"
+        var winrate = 100*(document.getElementById('apiGamesWon') / document.getElementById('apiGamesPlayed'))
+        if (winrate.isNan() == False) {
+        document.getElementById('apiWinrate').innerHTML = winrate + "%"
+        }
+        else {
+        document.getElementById('apiWinrate').innerHTML = "0%"
+        }
     }
 
     function gameStart() {
-        apiShowData()
         document.getElementById('rowButtons').innerHTML = ""
         document.getElementById('message').innerHTML = "Choose a generation"
 
