@@ -155,8 +155,8 @@
     const strikes = 3 // how many user is allowed to get incorrect before losing
     var pokeChecked = ""
 
-    const url = "https://swag.nighthawkcodingteams.cf/api/tester" // WEB
-    // const url = "http://127.0.0.1:5000/api/tester" // LOCAL
+    // const url = "https://swag.nighthawkcodingteams.cf/api/tester" // WEB
+    const url = "http://127.0.0.1:5000/api/tester" // LOCAL
 
 
     const options = {
@@ -276,28 +276,28 @@
     ]
 
     function apiShowData() {
-        fetch(url+'/correct', {
+        fetch(url, {
             method: 'GET',
         }).then(response => {response.json().then(data => {
             var apiCorrect = data.wtp.totalCorrect
             document.getElementById('apiCorrect').innerHTML = data.wtp.totalCorrect
         })})
 
-        fetch(url+'/incorrect', {
+        fetch(url, {
             method: 'GET',
         }).then(response => {response.json().then(data => {
             var apiCorrect = data.wtp.totalCorrect
             document.getElementById('apiIncorrect').innerHTML = data.wtp.totalIncorrect
         })})
 
-        fetch(url+'/gamePlayed', {
+        fetch(url, {
             method: 'GET',
         }).then(response => {response.json().then(data => {
             var apiCorrect = data.wtp.totalCorrect
             document.getElementById('apiGamesPlayed').innerHTML = data.wtp.gamesPlayed
         })})
 
-        fetch(url+'/gameWon', {
+        fetch(url, {
             method: 'GET',
         }).then(response => {response.json().then(data => {
             var apiCorrect = data.wtp.totalCorrect
@@ -309,7 +309,7 @@
         while (i > 0){
                 fetch(url+"/correct", {
                 method: 'PUT',
-            }).then(response => {response.json().then(data => {document.getElementById("apiCorrect").innerHTML = data.wtp.totalCorrect})})
+            }).then(response => {response.json().then(data => {document.getElementById("apiCorrect").innerHTML = data.totalCorrect})})
         i -= 1
         }
     }
@@ -318,7 +318,7 @@
         while (i > 0){
             fetch(url+"/incorrect", {
             method: 'PUT',
-        }).then(response => {response.json().then(data => {document.getElementById("apiIncorrect").innerHTML = data.wtp.totalIncorrect})})
+        }).then(response => {response.json().then(data => {document.getElementById("apiIncorrect").innerHTML = data.totalIncorrect})})
     i -= 1
     }
 }
@@ -326,13 +326,13 @@
     function apiAddGamePlayed() {
         fetch(url+"/gamePlayed", {
             method: 'PUT',
-          }).then(response => {response.json().then(data => {document.getElementById("apiGamesPlayed").innerHTML = data.wtp.gamesPlayed})})
+          }).then(response => {response.json().then(data => {document.getElementById("apiGamesPlayed").innerHTML = data.gamesPlayed})})
     }
 
     function apiAddGameWon() {
         fetch(url+"/gameWon", {
             method: 'PUT',
-          }).then(response => {response.json().then(data => {document.getElementById("apiGamesWon").innerHTML = data.wtp.gamesWon})})
+          }).then(response => {response.json().then(data => {document.getElementById("apiGamesWon").innerHTML = data.gamesWon})})
     }
 
     function apiUpdate(gameResult) {
@@ -348,6 +348,7 @@
     }
 
     function gameStart() {
+        apiShowData()
         document.getElementById('rowButtons').innerHTML = ""
         document.getElementById('message').innerHTML = "Choose a generation"
 
