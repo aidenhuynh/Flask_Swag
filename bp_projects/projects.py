@@ -27,7 +27,3 @@ def whosthatpokemon():
 @app_projects.route('/tetris/')
 def tetris():
     return render_template("tetris.html")
-
-@app_projects.route('/flappybird/')
-def flappybird():
-    return render_template("flappybird.html")
