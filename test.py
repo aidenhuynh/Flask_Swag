@@ -9,10 +9,10 @@ app_api2 = Blueprint('api', __name__,
 
 # API generator https://flask-restful.readthedocs.io/en/latest/api.html#id1
 api = Api(app_api2)
-data = [{
+data = {
         "Blackjack": {"Wins": 0, "Losses": 0},
         "wtp": {"totalCorrect": 0, "totalIncorrect": 0, "gamesPlayed": 0, "gamesWon": 0}
-    }]
+    }
 
 class TestAPI:
     class _GetAll(Resource):

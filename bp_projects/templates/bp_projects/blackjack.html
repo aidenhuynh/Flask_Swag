@@ -98,8 +98,8 @@
                                             'hearts_ace', 'hearts_2', 'hearts_3', 'hearts_4', 'hearts_5', 'hearts_6', 'hearts_7', 'hearts_8', 'hearts_9', 'hearts_10', 'hearts_jack', 'hearts_queen', 'hearts_king', 
                                             'spades_ace', 'spades_2', 'spades_3', 'spades_4', 'spades_5', 'spades_6', 'spades_7', 'spades_8', 'spades_9', 'spades_10', 'spades_jack', 'spades_queen', 'spades_king'];
                         var cardsPicked = [];
-                        const url = 'https://swag.nighthawkcodingteams.cf'; // web
-                        // const url = 'http://127.0.0.1:5000'; // local
+                        // const url = 'https://swag.nighthawkcodingteams.cf'; // web
+                        const url = 'http://127.0.0.1:5000'; // local
                         const options = {
                             method: 'PUT',
                             mode: 'cors',
@@ -117,6 +117,7 @@
                         var winScore = 21;
                         var isPlayerOver = false;
                         var isDealerOver = false;
+                        var alreadyWon = false;
                         var playerCards = [];
                         var dealerCards = [];
                         var playerAces = [];
@@ -124,8 +125,8 @@
 
                         fetch(url + "/api/tester", get_options)
                             .then(response => response.json().then(data => {
-                            document.getElementById("wins").innerHTML =  "Global Wins: " + data["Blackjack"].Wins;
-                            document.getElementById("losses").innerHTML =  "Global Losses: " + data["Blackjack"].Losses;
+                            document.getElementById("wins").innerHTML =  "Global Wins: " + data.Blackjack.Wins;
+                            document.getElementById("losses").innerHTML =  "Global Losses: " + data.Blackjack.Losses;
                             })
                         )
                         .then(response => console.log(response))
@@ -210,24 +211,32 @@
                             return sum;
                         }
 
-                        function updateGlobal(isWon){
-                            link = url + "/api/tester";
-                            if(isWon){
-                                link = link + "/win";
-                            } else {
-                                link = link + "/loss";
-                            }
-                        fetch(link, options)
-                            .then(response => response.json().then(data => {
-                            console.log(data);
-                            document.getElementById("wins").innerHTML =  "Global Wins: " + data.Wins;
-                            document.getElementById("losses").innerHTML =  "Global Losses: " + data.Losses;
-                            })
-                        )
-                        .then(response => console.log(response))
-                        .catch(err => console.error(err))
+                        function won(){
+                            alreadyWon = true;
                         }
 
+                        function updateGlobal(isWon, alreadyWon){
+                            console.log(alreadyWon)
+                            if(alreadyWon == false){
+                                won()
+                                link = url + "/api/tester";
+                                if(isWon){
+                                    link = link + "/win";
+                                } else {
+                                    link = link + "/loss";
+                                }
+                            fetch(link, options)
+                                .then(response => response.json().then(data => {
+                                // console.log(data);
+                                document.getElementById("wins").innerHTML =  "Global Wins: " + data.Wins;
+                                document.getElementById("losses").innerHTML =  "Global Losses: " + data.Losses;
+                                })
+                            )
+                            .then(response => console.log(response))
+                            .catch(err => console.error(err))
+                            // console.log(alreadyWon)
+                            }
+                        }
                         // Initialization of the game and resetting of the scores
                         document.getElementById("start").onclick = function(){
                             // document.getElementById("style").innerHTML -= ""
@@ -238,6 +247,7 @@
                             dealerAces = [];
                             isDealerOver = false;
                             isPlayerOver = false;
+                            alreadyWon = false;
 
                             document.getElementById("playerCardArray").innerHTML = null;
                             document.getElementById("dealerCardArray").innerHTML = null;
@@ -256,17 +266,17 @@
                             }
                             else if(CalculateScore(true) == winScore){
                                 document.getElementById("win").style.visibility = "visible";
-                                updateGlobal(true);
+                                updateGlobal(true, alreadyWon);
                             }
                             else if(CalculateScore(false) == winScore){
                                 document.getElementById("lose").style.visibility = "visible";
-                                updateGlobal(false);
+                                updateGlobal(false, alreadyWon);
                             }
                         }
 
                         // Adds score to the player and checks if the player has won or lost if they are over or equal to the winscore
                         document.getElementById("hit").onclick = function(){
-
+                            console.log(alreadyWon)
                             document.getElementById("Player").innerHTML += " | " + RandCard(true);
                             document.getElementById("PlayerScore").innerHTML = "Your Score is: " + CalculateScore(true);
 
@@ -278,12 +288,12 @@
 
                             if(CalculateScore(true) > winScore){
                                 document.getElementById("lose").style.visibility = "visible";
-                                updateGlobal(false);
+                                updateGlobal(false, alreadyWon);
                             } 
 
                             if(CalculateScore(true) == winScore){
                                 document.getElementById("win").style.visibility = "visible";
-                                updateGlobal(true);
+                                updateGlobal(true, alreadyWon);
                             }
                         }
 
@@ -294,7 +304,7 @@
 
                                 if (CalculateScore(false) > CalculateScore(true)){   
                                     document.getElementById("lose").style.visibility = "visible";
-                                    updateGlobal(false);
+                                    updateGlobal(false, alreadyWon);
                                     gameEnd = true;
 
                                 } else if (CalculateScore(false) == CalculateScore(true)){
@@ -307,12 +317,12 @@
 
                                     if (CalculateScore(false) > winScore){
                                         document.getElementById("win").style.visibility = "visible";
-                                        updateGlobal(true);
+                                        updateGlobal(true, alreadyWon);
                                         gameEnd = true;
 
                                     } else if (CalculateScore(false) > CalculateScore(true)){
                                         document.getElementById("lose").style.visibility = "visible";
-                                        updateGlobal(false);
+                                        updateGlobal(false, alreadyWon);
                                         gameEnd = true;
                                     }
                                 }
