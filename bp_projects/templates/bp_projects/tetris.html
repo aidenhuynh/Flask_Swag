@@ -16,7 +16,7 @@
     }
 
     canvas {
-      border: 1px solid white;
+      border: 1px solid rgb(232, 17, 17);
     }
     </style>
   </head>
@@ -24,7 +24,7 @@
   <canvas width="320" height="640" id="game"></canvas>
   <script>
 
-  // get a random integer between the range of [min,max]
+  // get a random integer between the range of maximum/minimum
   
   function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -60,15 +60,14 @@
     const row = name === 'I' ? -1 : -2;
 
     return {
-      name: name,      // name of the piece (L, O, etc.)
+      name: name,      // name of the piece 
       matrix: matrix,  // the current rotation matrix
-      row: row,        // current row (starts offscreen)
+      row: row,        // current row 
       col: col         // current col
     };
   }
 
-  // rotate an NxN matrix 90deg
-  // @see https://codereview.stackexchange.com/a/186834
+  
   function rotate(matrix) {
     const N = matrix.length - 1;
     const result = matrix.map((row, i) =>
@@ -118,8 +117,7 @@
     for (let row = playfield.length - 1; row >= 0; ) {
       if (playfield[row].every(cell => !!cell)) {
 
-        // drop every row above this one
-        for (let r = row; r >= 0; r--) {
+          for (let r = row; r >= 0; r--) {
           for (let c = 0; c < playfield[r].length; c++) {
             playfield[r][c] = playfield[r-1][c];
           }
@@ -166,7 +164,6 @@
     }
   }
 
-  // how to draw each tetromino
  
   const tetrominos = {
     'I': [
