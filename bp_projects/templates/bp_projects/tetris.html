@@ -1,6 +1,6 @@
 </html>
   <head>
-    <title>Tetris </title>
+    <title>Tetris</title>
     <meta charset="UTF-8">
     <style>
     html, body {
@@ -23,10 +23,9 @@
   <body>
   <canvas width="320" height="640" id="game"></canvas>
   <script>
-  // https://tetris.fandom.com/wiki/Tetris_Guideline
 
   // get a random integer between the range of [min,max]
-  // @see https://stackoverflow.com/a/1527820/2124254
+  
   function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -35,7 +34,6 @@
   }
 
   // generate a new tetromino sequence
-  // @see https://tetris.fandom.com/wiki/Random_Generator
   function generateSequence() {
     const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
 
@@ -157,8 +155,6 @@
   const grid = 32;
   const tetrominoSequence = [];
 
-  // keep track of what is in every cell of the game using a 2d array
-  // tetris playfield is 10x20, with a few rows offscreen
   const playfield = [];
 
   // populate the empty state
@@ -171,7 +167,7 @@
   }
 
   // how to draw each tetromino
-  // @see https://tetris.fandom.com/wiki/SRS
+ 
   const tetrominos = {
     'I': [
       [0,0,0,0],

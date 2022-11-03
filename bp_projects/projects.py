@@ -22,4 +22,8 @@ def ahadsblog():
 
 @app_projects.route('/whosthatpokemon/')
 def whosthatpokemon():
-    return render_template("whosthatpokemon.html")
+    return render_template("whosthatpokeman.html")
+
+@app_projects.route('/tetris/')
+def tetris():
+    return render_template("tetris.html")
