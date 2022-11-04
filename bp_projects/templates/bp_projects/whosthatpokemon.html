@@ -333,7 +333,7 @@
 
     function apiUpdate(gameResult) {
         if (gameResult === 1) {
-        apiAddGameWon()
+            apiAddGameWon()
         }
 
         apiAddCorrect(correct)
@@ -341,11 +341,11 @@
         apiAddGamePlayed()
 
         var winrate = 100*(document.getElementById('apiGamesWon') / document.getElementById('apiGamesPlayed'))
-        if (winrate.isNan() == False) {
-        document.getElementById('apiWinrate').innerHTML = winrate + "%"
+        if (isNaN(winrate)) {
+            document.getElementById('apiWinrate').innerHTML = "0%"
         }
         else {
-        document.getElementById('apiWinrate').innerHTML = "0%"
+            document.getElementById('apiWinrate').innerHTML = winrate + "%"
         }
     }
 

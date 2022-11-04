@@ -60,8 +60,8 @@ class TestAPI:
     
     api.add_resource(_PutCorrect, '/correct')
     api.add_resource(_PutIncorrect, '/incorrect')
-    api.add_resource(_PutGamePlays, '/gamePlayed')
-    api.add_resource(_PutGameWins, '/gameWon')
+    api.add_resource(_PutGamePlays, '/gamesPlayed')
+    api.add_resource(_PutGameWins, '/gamesWon')
 
     api.add_resource(_PutBeans, '/bean')
 
